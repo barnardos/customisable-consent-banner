@@ -1,0 +1,139 @@
+window.BarnardosConsent = function(options) {
+
+  this.options = options || {};
+
+  if (!options.gtmCode) {
+    return;
+  }
+
+  var gtmCode = options.gtmCode;
+
+  var getCookieValue = function(name) {
+    var result = document.cookie.match(
+      "(^|[^;]+)\\s*" + name + "\\s*=\\s*([^;]+)"
+    );
+    return result ? result.pop() : "";
+  };
+
+  // Build a button
+  var buildButton = function(text) {
+    var button = document.createElement("button");
+    button.type = "button";
+    button.id = text.toLowerCase();
+    button.textContent = text;
+    button.className = "btn btn--green";
+    return button;
+  };
+
+  // Close cookie notice
+  var closeCookieNotice = function() {
+    cookieNotice.parentNode.removeChild(cookieNotice);
+    var expires = new Date();
+    expires.setDate(expires.getDate() + 365);
+    document.cookie = `cookieNotice=closed; expires=${expires}; domain=.barnardos.org.uk; path=/; SameSite=Strict`;
+  };
+
+  // Load the scripts and trackers
+  // Using the minified code GTM gives us
+  var loadScripts = (w, d, s, l, i) => {
+    w[l] = w[l] || [];
+    w[l].push({
+      "gtm.start": new Date().getTime(),
+      event: "gtm.js"
+    });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != "dataLayer" ? "&l=" + l : "";
+    j.async = true;
+    j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+    f.parentNode.insertBefore(j, f);
+    // Add acceptance to cookie so we can load the
+    // trackers and scripts with subsequent page views
+    var expires = new Date();
+    expires.setDate(expires.getDate() + 365);
+    document.cookie = `cookieAction=accept; expires=${expires}; domain=.barnardos.org.uk; path=/; SameSite=Strict`;
+  };
+
+  // Create a YYYY-MM date format
+  var formatDate = timestamp => {
+    var date = new Date(timestamp * 1000);
+    var year = date.getFullYear();
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    return `${year}-${month}`;
+  };
+
+  // Send a POST request to a click tracker
+  var sendClickAction = button => {
+    // Make a UNIX timestamp
+    var time = Math.round(new Date().getTime() / 1000);
+    var date = formatDate(time);
+    // Build an object to send as JSON
+    var obj = {
+      time: time,
+      date: date,
+      value: button.id
+    };
+    // Send the object
+    if (window.XMLHttpRequest) {
+      var request = new XMLHttpRequest();
+      var url =
+        "https://barnardos-cors-anywhere.herokuapp.com/https://cookie-banner-click-counter.herokuapp.com/ajax-accept.php";
+      request.open("POST", url, true);
+      request.setRequestHeader("Content-type", "application/json");
+      request.onreadystatechange = function() {
+        if (request.readyState === XMLHttpRequest.DONE) {
+          if (request.status !== 200) {
+            console.error("Error sending data to click action tracker");
+          }
+        }
+      };
+      request.send(JSON.stringify(obj));
+    }
+  };
+
+  if (getCookieValue("cookieNotice") !== "closed") {
+    // Check if the banner has already been interacted with
+    // Create the HTML and CSS if not
+    var cookieNotice = document.createElement("div");
+    cookieNotice.className = "cookie-policy";
+    var text = document.createElement("p");
+    text.innerHTML =
+      'We use cookies to improve your experience on our site, show you personalised marketing and information and to help us understand how you use the site. By pressing accept, you agree to us storing those cookies on your device. By pressing reject, you refuse the use of all cookies except those that are essential to the running of our website. See our <a href="https://www.barnardos.org.uk/privacy-notice">privacy policy</a> for more details.';
+    var style = document.createElement("style");
+    style.textContent =
+      ".cookie-policy {background-color:#444;color:#fff;padding:0.5rem 1rem 4rem;position:fixed;bottom:0;left:0;width:100%;z-index:2}@media screen and (min-width:45rem){.cookie-policy{padding:0.5rem 2rem}}.cookie-policy p {display:inline-block;margin:0.5rem 1rem 0.5rem 0;vertical-align:middle}.cookie-policy div{display:inline-block;white-space:nowrap}.cookie-policy button {margin:0 1em 0 0;}.cookie-policy a {text-decoration:underline}";
+    cookieNotice.appendChild(style);
+    cookieNotice.appendChild(text);
+    var buttonWrap = document.createElement("div");
+    var rejectButton = buildButton("Reject");
+    var acceptButton = buildButton("Accept");
+    buttonWrap.appendChild(rejectButton);
+    buttonWrap.appendChild(acceptButton);
+    cookieNotice.appendChild(buttonWrap);
+    var firstChild = document.body.firstChild;
+    firstChild.parentNode.insertBefore(cookieNotice, firstChild);
+  }
+
+  // If cookies are previously accepted run the function
+  // to load the trackers and scripts
+  if (getCookieValue("cookieAction") === "accept") {
+    loadScripts(window, document, "script", "dataLayer", gtmCode);
+  }
+
+  // Listeners
+  if (rejectButton) {
+    rejectButton.addEventListener("click", function(e) {
+      closeCookieNotice();
+      sendClickAction(e.target);
+    });
+  }
+
+  if (acceptButton) {
+    acceptButton.addEventListener("click", function(e) {
+      closeCookieNotice();
+      loadScripts(window, document, "script", "dataLayer", gtmCode);
+      sendClickAction(e.target);
+    });
+  }
+};
+
