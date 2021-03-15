@@ -1,10 +1,6 @@
+import gtmCode from './gtm.esm.js';
+
 export default () => {
-  /* eslint-disable no-undef */
-  if (GLOBAL_GTM === undefined) {
-    return;
-  }
-  const gtmCode = GLOBAL_GTM;
-  /* eslint-enable no-undef */
   if (!gtmCode) {
     return;
   }
