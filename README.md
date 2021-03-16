@@ -4,6 +4,8 @@
 
 Cloning this repo as a git submodule is recommended. A .gitignore can be used inside the submodule to prevent deploying unwanted files.
 
+Demos are in the gh-pages branch and visible online at...
+
 ### Option 1: script element in HTML
 
 Put the following near the end of the body element, replacing GTM-XXXXXX with the correct ID.
