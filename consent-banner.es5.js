@@ -1,6 +1,6 @@
-window.BarnardosConsent = function(options) {
+'use strict';
 
-  this.options = options || {};
+window.BarnardosConsent = function(options) {
 
   if (!options.gtmCode) {
     return;
