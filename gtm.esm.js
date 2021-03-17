@@ -1,1 +1,1 @@
-export default 'GTM-XXXXXX';
+export default "GTM-XXXXXX";

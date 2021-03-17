@@ -1,7 +1,6 @@
 'use strict';
 
 window.BarnardosConsent = function(options) {
-
   if (!options.gtmCode) {
     return;
   }
@@ -30,7 +29,10 @@ window.BarnardosConsent = function(options) {
     consentBanner.parentNode.removeChild(consentBanner);
     var expires = new Date();
     expires.setDate(expires.getDate() + 365);
-    document.cookie = 'consentBanner=closed; expires=' + expires + ';domain=.barnardos.org.uk; path=/; SameSite=Strict';
+    document.cookie =
+      "consentBanner=closed; expires=" +
+      expires +
+      ";domain=.barnardos.org.uk; path=/; SameSite=Strict";
   };
 
   // Load the scripts and trackers
@@ -51,7 +53,10 @@ window.BarnardosConsent = function(options) {
     // trackers and scripts with subsequent page views
     var expires = new Date();
     expires.setDate(expires.getDate() + 365);
-    document.cookie = 'consentAction=accept; expires=' + expires + ';domain=.barnardos.org.uk; path=/; SameSite=Strict';
+    document.cookie =
+      "consentAction=accept; expires=" +
+      expires +
+      ";domain=.barnardos.org.uk; path=/; SameSite=Strict";
   };
 
   // Create a YYYY-MM date format
@@ -59,7 +64,7 @@ window.BarnardosConsent = function(options) {
     var date = new Date(timestamp * 1000);
     var year = date.getFullYear();
     var month = ("0" + (date.getMonth() + 1)).slice(-2);
-    return year + '-' + month;
+    return year + "-" + month;
   };
 
   // Send a POST request to a click tracker
@@ -136,4 +141,3 @@ window.BarnardosConsent = function(options) {
     });
   }
 };
-

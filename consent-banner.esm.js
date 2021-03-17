@@ -1,4 +1,4 @@
-import gtmCode from './gtm.esm.js';
+import gtmCode from "./gtm.esm.js";
 
 export default () => {
   if (!gtmCode) {
@@ -135,4 +135,3 @@ export default () => {
     });
   }
 };
-
