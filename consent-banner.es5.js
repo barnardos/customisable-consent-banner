@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 window.BarnardosConsent = function(options) {
   if (!options.gtmCode) {
@@ -141,3 +141,4 @@ window.BarnardosConsent = function(options) {
     });
   }
 };
+
