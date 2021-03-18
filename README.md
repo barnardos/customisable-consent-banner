@@ -2,7 +2,18 @@
 
 ## Usage
 
-Cloning this repo as a git submodule is recommended. A .gitignore can be used inside the submodule to prevent deploying unwanted files.
+Cloning this repo as a git submodule is recommended. Watch this repository and run XXXX when it changes. Otherwise watch this repository and perform manual updates when it changes.
+
+Steps for creating a git submodule:
+
+1. `cd` to the directory the submodule will live.
+2. Create a new directory for it e.g. `mkdir submodule-consent-banner`.
+3. `cd` into that directory.
+4. Type `git init` and press <kbd>enter</kbd>.
+5. Type `git submodule add git@github.com:barnardos/consent-banner.git` and press <kbd>enter</kbd> to add the submodule.
+6. Add and commit the new files in the submodule.
+6. `cd` out of the submodule into the parent repository.
+7. Add and commit the new files to the parent repository.
 
 Demos are in the gh-pages branch and visible online at...
 
