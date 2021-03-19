@@ -1,0 +1,20 @@
+{
+  "name": "consent-banner",
+  "version": "0.0.1",
+  "description": "Barnardo's consent banner.",
+  "main": "consent-banner.esm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barnardos/consent-banner.git"
+  },
+  "keywords": ["barnardos", "cookies", "consent"],
+  "author": "Barnardo's Web Team <websiteteam@barnardos.org.uk> (https://www.barnardos.org.uk)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/barnardos/consent-banner/issues"
+  },
+  "homepage": "https://github.com/barnardos/consent-banner#readme"
+}
