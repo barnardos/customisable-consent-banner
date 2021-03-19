@@ -9,9 +9,8 @@ Steps for creating a git submodule:
 1. `cd` to the directory the submodule will live.
 2. Create a new directory for it e.g. `mkdir submodule-consent-banner`.
 3. `cd` into that directory.
-4. Type `git init` and press <kbd>enter</kbd>.
-5. Type `git submodule add git@github.com:barnardos/consent-banner.git` and press <kbd>enter</kbd> to add the submodule.
-6. Add and commit the new files in the submodule.
+4. Type `git submodule add -b main git@github.com:barnardos/consent-banner.git` and press <kbd>enter</kbd> to add the submodule.
+5. Type `git submodule init` and press <kbd>enter</kbd>.
 6. `cd` out of the submodule into the parent repository.
 7. Add and commit the new files to the parent repository.
 
