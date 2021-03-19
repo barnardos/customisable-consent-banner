@@ -2,7 +2,7 @@
 
 ## Usage
 
-Cloning this repo as a git submodule is recommended. Watch this repository and run `git pull` from inside the submodule directory when there are changes. Otherwise watch this repository and perform manual updates.
+Cloning this repo as a git submodule is recommended if not using `npm install`. Watch this repository and run `git pull` from inside the submodule directory when there are changes. Otherwise watch this repository and perform manual updates.
 
 Steps for creating a git submodule:
 
