@@ -2,7 +2,7 @@
   "name": "@barnardoswebteam/consent-banner",
   "version": "0.0.2",
   "description": "Barnardo's consent banner.",
-  "main": "consent-banner.esm.js",
+  "main": "consent-banner.module.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,7 +13,8 @@
   "keywords": [
     "barnardos",
     "cookies",
-    "consent"
+    "consent",
+    "banner"
   ],
   "author": "Barnardo's Web Team <websiteteam@barnardos.org.uk> (https://www.barnardos.org.uk)",
   "license": "MIT",
