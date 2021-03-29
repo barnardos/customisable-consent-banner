@@ -1,5 +1,5 @@
 module.exports = () => {
-  const gtmCode = process.env.gtmCode;
+  const gtmCode = process.env.GTM_CODE;
 
   if(!gtmCode) {
     return;
