@@ -38,4 +38,4 @@ consentBanner();
 
 ### Option 3: npm install
 
-run `npm install barnardos-consent-banner`
+run `npm install @barnardoswebteam/consent-banner`
