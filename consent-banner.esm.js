@@ -98,7 +98,7 @@ export default () => {
       'We use cookies to improve your experience on our site, show you personalised marketing and information and to help us understand how you use the site. By pressing accept, you agree to us storing those cookies on your device. By pressing reject, you refuse the use of all cookies except those that are essential to the running of our website. See our <a href="https://www.barnardos.org.uk/privacy-notice">privacy policy</a> for more details.';
     const style = document.createElement("style");
     style.textContent =
-      ".cookie-policy {background-color:#444;color:#fff;padding:0.5rem 1rem 4rem;position:fixed;bottom:0;left:0;width:100%;z-index:2}@media screen and (min-width:45rem){.cookie-policy{padding:0.5rem 2rem}}.cookie-policy p {display:inline-block;margin:0.5rem 1rem 0.5rem 0;vertical-align:middle}.cookie-policy div{display:inline-block;white-space:nowrap}.cookie-policy button {margin:0 1em 0 0;}.cookie-policy a {text-decoration:underline}";
+      ".cookie-policy {background-color:#444;color:#fff;padding:0.5rem 1rem 4rem;position:fixed;bottom:0;left:0;width:100%;z-index:2}@media screen and (min-width:45rem){.cookie-policy{padding:0.5rem 2rem}}.cookie-policy p {display:inline-block;margin:0.5rem 1rem 0.5rem 0;vertical-align:middle}.cookie-policy div{display:inline-block;white-space:nowrap}.cookie-policy button {margin:0 1em 0 0;}.cookie-policy a {text-decoration:underline;color:inherit}";
     consentBanner.appendChild(style);
     consentBanner.appendChild(text);
     const buttonWrap = document.createElement("div");
