@@ -18,7 +18,7 @@ export default () => {
     button.type = "button";
     button.id = text.toLowerCase();
     button.textContent = text;
-    button.className = "btn btn--green";
+    button.className = "_barnardos-consent-banner-button";
     return button;
   };
 
