@@ -2,7 +2,7 @@
   "name": "@barnardoswebteam/consent-banner",
   "version": "0.0.5",
   "description": "Barnardo's consent banner.",
-  "main": "consent-banner.esm.js",
+  "main": "consent-banner.node.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
