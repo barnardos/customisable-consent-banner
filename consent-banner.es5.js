@@ -20,7 +20,6 @@ window.BarnardosConsent = function(options) {
     button.type = "button";
     button.id = text.toLowerCase();
     button.textContent = text;
-    button.className = "_barnardos-consent-banner-button";
     return button;
   };
 
@@ -100,13 +99,13 @@ window.BarnardosConsent = function(options) {
     // Check if the banner has already been interacted with
     // Create the HTML and CSS if not
     var consentBanner = document.createElement("div");
-    consentBanner.className = "cookie-policy";
+    consentBanner.className = "_barnardos-consent-banner";
     var text = document.createElement("p");
     text.innerHTML =
       'We use cookies to improve your experience on our site, show you personalised marketing and information and to help us understand how you use the site. By pressing accept, you agree to us storing those cookies on your device. By pressing reject, you refuse the use of all cookies except those that are essential to the running of our website. See our <a href="https://www.barnardos.org.uk/privacy-notice">privacy policy</a> for more details.';
     var style = document.createElement("style");
     style.textContent =
-      ".cookie-policy {background-color:#444;color:#fff;padding:0.5rem 1rem 4rem;position:fixed;bottom:0;left:0;width:100%;z-index:2}@media screen and (min-width:45rem){.cookie-policy{padding:0.5rem 2rem}}.cookie-policy p {display:inline-block;margin:0.5rem 1rem 0.5rem 0;vertical-align:middle}.cookie-policy div{display:inline-block;white-space:nowrap}.cookie-policy button {margin:0 1em 0 0;}.cookie-policy a {text-decoration:underline;color:inherit}";
+      "._barnardos-consent-banner {background-color:#444;color:#fff;padding:0.5rem 1rem 4rem;position:fixed;bottom:0;left:0;width:100%;z-index:2}@media screen and (min-width:45rem){._barnardos-consent-banner{padding:0.5rem 2rem}}._barnardos-consent-policy p {display:inline-block;margin:0.5rem 1rem 0.5rem 0;vertical-align:middle}._barnardos-consent-banner div{display:inline-block;white-space:nowrap}._barnardos-consent-banner button {appearance: none; background-color: #6aa300; border: 1px solid #6aa300; border-radius: 0; color: #fff; display: inline-block; font-size: 1.125rem; font-weight: 800; letter-spacing: 0; line-height: 1.5rem; padding: 0.5rem 2rem; text-align: center; user-select: none; vertical-align: middle; white-space: nowrap; margin:0 1em 0 0;}._barnardos-consent-banner__button:hover, ._barnardos-consent-banner__button:focus { background-color: #5f9300; border-color: #5f9300; }._barnardos-consent-banner a {text-decoration:underline;color:inherit}";
     consentBanner.appendChild(style);
     consentBanner.appendChild(text);
     var buttonWrap = document.createElement("div");
