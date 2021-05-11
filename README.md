@@ -45,7 +45,7 @@ Put the following near the end of the body element, replacing GTM-XXXXXX with th
 Self hosting is recommended but if it's not possible you can use:
 
 ```html
-<script src="https://unpkg.com/@barnardoswebteam/consent-banner@0.0.7/consent-banner.node.js"></script>
+<script src="https://unpkg.com/@barnardoswebteam/consent-banner@0.1.0/consent-banner.node.js"></script>
 <script>BarnardosConsent({'gtmCode':'GTM-XXXXXX'});</script>
 ```
 
