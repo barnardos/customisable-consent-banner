@@ -1,6 +1,6 @@
-import gtmCode from './gtm.esm.js';
-
 export default () => {
+
+  const gtmCode = process.env.GTM_CODE;
   if (!gtmCode) {
     return;
   }
