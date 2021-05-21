@@ -5,6 +5,9 @@ export default () => {
     return;
   }
 
+  // Fix for Donate staging not being on barnardos.org.uk
+  const cookieDomain = location.hostname === 'barnardos-donate-staging.herokuapp.com' ? 'barnardos-donate-staging.herokuapp.com' : '.barnardos.org.uk';
+
   const getCookieValue = (name) => {
     const result = document.cookie.match(
       `(^|[^;]+)\\s*${name}\\s*=\\s*([^;]+)`,
@@ -50,7 +53,7 @@ export default () => {
     consentBanner.parentNode.removeChild(consentBanner);
     const expires = new Date();
     expires.setDate(expires.getDate() + 365);
-    document.cookie = `consentBanner=closed; expires=${expires}; domain=.barnardos.org.uk; path=/; SameSite=Strict`;
+    document.cookie = `consentBanner=closed; expires=${expires}; domain=${cookieDomain}; path=/; SameSite=Strict`;
   };
 
   // Load the scripts and trackers
@@ -70,7 +73,7 @@ export default () => {
     // Add acceptance to cookie so we can load the trackers and scripts with subsequent page views
     const expires = new Date();
     expires.setDate(expires.getDate() + 365);
-    document.cookie = `consentAction=accept; expires=${expires}; domain=.barnardos.org.uk; path=/; SameSite=Strict`;
+    document.cookie = `consentAction=accept; expires=${expires}; domain=${cookieDomain}; path=/; SameSite=Strict`;
   };
 
   // Create a YYYY-MM date format
