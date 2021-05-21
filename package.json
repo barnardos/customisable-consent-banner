@@ -24,8 +24,5 @@
   "homepage": "https://github.com/barnardos/consent-banner#readme",
   "devDependencies": {
     "eslint": "^7.25.0"
-  },
-  "dependencies": {
-    "@barnardoswebteam/consent-banner": "^0.1.2"
   }
 }
