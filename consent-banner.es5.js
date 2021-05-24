@@ -75,7 +75,8 @@ window.BarnardosConsent = function(options) {
     var obj = {
       time: time,
       date: date,
-      value: button.id
+      value: button.id,
+      subdomain: location.hostname.split('.')[0]
     };
     // Send the object
     if (window.XMLHttpRequest) {

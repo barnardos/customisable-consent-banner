@@ -68,7 +68,8 @@ module.exports = () => {
     const obj = {
       time: time,
       date: date,
-      value: button.id
+      value: button.id,
+      subdomain: location.hostname.split('.')[0]
     };
     // Send the object
     if (window.XMLHttpRequest) {

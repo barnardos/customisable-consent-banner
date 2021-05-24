@@ -91,9 +91,10 @@ export default () => {
     const date = formatDate(time);
     // Build an object to send as JSON
     const obj = {
-      time,
-      date,
+      time: time,
+      date: date,
       value: button.id,
+      subdomain: location.hostname.split('.')[0]
     };
     // Send the object
     if (window.XMLHttpRequest) {
