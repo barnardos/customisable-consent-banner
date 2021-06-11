@@ -17,8 +17,6 @@ And add the GMT container ID in .env or as a config variable as `GTM_CODE`.
 
 ### Option 2: <abbr title="ECMAScript Module">ESM</a>
 
-Import consent-banner.esm.js, replacing GTM-XXXXXX in gtm.esm.js with the correct ID.
-
 In your HTML add the following:
 
 ```html
@@ -31,7 +29,7 @@ import consentBanner from './path/to/consent-banner.esm.js';
 consentBanner();
 ```
 
-Finally add the GTM container ID to gtm.esm.js, replacing `GTM-XXXXXX`.
+And add the GMT container ID in .env or as a config variable as `GTM_CODE`.
 
 ### Option 3: script element in HTML
 
