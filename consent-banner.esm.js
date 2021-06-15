@@ -113,7 +113,40 @@ export default () => {
     }
   };
 
+  // Send a banner load event to the counter
+  const sendLoad = () => {
+    // Make a UNIX timestamp
+    const time = Math.round(new Date().getTime() / 1000);
+    const date = formatDate(time);
+    // Build an object to send as JSON
+    const obj = {
+      time: time,
+      date: date
+    };
+    // Send the object
+    if (window.XMLHttpRequest) {
+      var request = new XMLHttpRequest();
+      var url =
+        "https://barnardos-cors-anywhere.herokuapp.com/https://cookie-banner-click-counter.herokuapp.com/ajax-load-accept.php";
+      request.open("POST", url, true);
+      request.setRequestHeader("Content-type", "application/json");
+      request.onreadystatechange = function() {
+        if (request.readyState === XMLHttpRequest.DONE) {
+          if (request.status !== 200) {
+            console.error("Error sending data to click action tracker");
+          }
+        }
+      };
+      request.send(JSON.stringify(obj));
+    }
+  };
+
   if (getCookieValue('consentBanner') !== 'closed') {
+    // Check if the banner has been loaded and if not send a session load to the counter
+    if (sessionStorage.consentBannerSessionLoad !== "loaded") {
+      sendLoad();
+      sessionStorage.consentBannerSessionLoad = "loaded";
+    }
     buildBanner();
   }
 
