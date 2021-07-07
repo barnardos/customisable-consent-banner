@@ -5,8 +5,8 @@ export default () => {
     return;
   }
 
-  // Fix for Donate staging not being on barnardos.org.uk
-  const cookieDomain = location.hostname === 'barnardos-donate-staging.herokuapp.com' ? 'barnardos-donate-staging.herokuapp.com' : '.barnardos.org.uk';
+  // Allow banner to live on other domains, especially test/staging/etc
+  const cookieDomain = location.hostname.indexOf('barnardos.org.uk') !== -1 ? '.barnardos.org.uk' : location.hostname;
 
   const getCookieValue = (name) => {
     const result = document.cookie.match(

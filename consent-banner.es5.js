@@ -5,6 +5,9 @@ window.BarnardosConsent = function(options) {
     return;
   }
 
+  // Allow banner to live on other domains, especially test/staging/etc
+  var cookieDomain = location.hostname.indexOf('barnardos.org.uk') !== -1 ? '.barnardos.org.uk' : location.hostname;
+
   var gtmCode = options.gtmCode;
 
   var getCookieValue = function(name) {
@@ -54,7 +57,9 @@ window.BarnardosConsent = function(options) {
     document.cookie =
       'consentBanner=closed; expires=' +
       expires +
-      ';domain=.barnardos.org.uk; path=/; SameSite=Strict';
+      ';' + 
+      cookieDomain + 
+      '; path=/; SameSite=Strict';
   };
 
   // Load the scripts and trackers
@@ -78,7 +83,9 @@ window.BarnardosConsent = function(options) {
     document.cookie =
       'consentAction=accept; expires=' +
       expires +
-      ';domain=.barnardos.org.uk; path=/; SameSite=Strict';
+      ';' + 
+      cookieDomain + 
+      '; path=/; SameSite=Strict';
   };
 
   // Create a YYYY-MM date format
