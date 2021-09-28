@@ -13,7 +13,7 @@ const consentBanner = require('@barnardoswebteam/consent-banner');
 consentBanner();
 ```
 
-And add the GMT container ID in .env or as a config variable as `GTM_CODE`.
+And add the GTM container ID in .env or as a config variable as `GTM_CODE`.
 
 ### Option 2: <abbr title="ECMAScript Module">ESM</a>
 
@@ -29,7 +29,7 @@ import consentBanner from './path/to/consent-banner.esm.js';
 consentBanner();
 ```
 
-And add the GMT container ID in .env or as a config variable as `GTM_CODE`.
+And add the GTM container ID in .env or as a config variable as `GTM_CODE`.
 
 ### Option 3: script element in HTML
 
