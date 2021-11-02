@@ -5,9 +5,6 @@ module.exports = () => {
     return;
   }
 
-  // Allow banner to live on other domains, especially test/staging/etc
-  const cookieDomain = location.hostname.indexOf('barnardos.org.uk') !== -1 ? '.barnardos.org.uk' : location.hostname;
-
   const getCookieValue = (name) => {
     const result = document.cookie.match(
       `(^|[^;]+)\\s*${name}\\s*=\\s*([^;]+)`,
@@ -32,28 +29,57 @@ module.exports = () => {
 
   // Build the banner
   const buildBanner = () => {
+    const cookieOverlay = document.createElement("div");
+    cookieOverlay.className = "_barnardos-cookie-overlay";
+    cookieOverlay.id = "overlay";
     consentBanner.className = '_barnardos-consent-banner';
+    consentBanner.setAttribute("role", "dialog");
+    consentBanner.setAttribute("aria-modal", "true");
+    consentBanner.setAttribute("aria-labelledby", "dialog-title");
+    consentBanner.setAttribute("aria-describedby", "dialog-description");
+    consentBanner.setAttribute("tabindex", "-1");
+    const closeButton = document.createElement("button");
+    closeButton.id = "close";
+    closeButton.className = "_barnardos-cookie-close";
+    closeButton.setAttribute("aria-label", "Close cookie tracking preference");
+    closeButton.innerHTML = "&#x2715;";
+    const heading = document.createElement("h2");
+    heading.textContent = "Cookie tracking preference";
+    heading.className = "_barnardos-cookie-heading";
+    heading.id = "dialog-title";
     const text = document.createElement('p');
+    text.id = "dialog-description";
     text.innerHTML = 'We use cookies to improve your experience on our site, show you personalised marketing and information and to help us understand how you use the site. By pressing accept, you agree to us storing those cookies on your device. By pressing reject, you refuse the use of all cookies except those that are essential to the running of our website. See our <a href="https://www.barnardos.org.uk/privacy-notice">privacy policy</a> and <a href="https://www.barnardos.org.uk/cookie-notice">cookie notice</a> for more details.';
     const style = document.createElement('style');
-    style.textContent = '._barnardos-consent-banner {background-color:#444;color:#fff;font-family:inherit;padding:0.5rem 1rem 4rem;position:fixed;bottom:0;left:0;width:100%;z-index:10}@media screen and (min-width:45rem){._barnardos-consent-banner{padding:0.5rem 2rem}}._barnardos-consent-banner p {display:inline-block;font-size:1rem;line-height:1.5;margin:0.5rem 1rem 0.5rem 0;vertical-align:middle}._barnardos-consent-banner div{display:inline-block;white-space:nowrap}._barnardos-consent-banner button {appearance: none; background-color: #6aa300; border: 1px solid #6aa300; border-radius: 0; color: #fff; display: inline-block; font-size: 1.125rem; font-weight: 800; letter-spacing: 0; line-height: 1.5rem; padding: 0.5rem 2rem; text-align: center; user-select: none; vertical-align: middle; white-space: nowrap; margin:0 1em 0 0;}._barnardos-consent-banner button:hover, ._barnardos-consent-banner button:focus { background-color: #5f9300; border-color: #5f9300; }._barnardos-consent-banner a {text-decoration:underline;color:white}';
+    style.textContent = "._barnardos-cookie-overlay{z-index:3;position:fixed;top:0;left:0;width:100%;height:100%;background-color: rgba(0,0,0,0.7);}._barnardos-consent-banner {background-color:#fff;padding:0.5rem 1rem 1rem;position:fixed;top:50%;left:50%;width:90%;max-width:36rem;transform:translate(-50%,-50%);z-index:4}._barnardos-consent-banner:focus{outline:none}.cooke-policy h2 {margin-right:2rem}._barnardos-consent-banner p {display:inline-block;margin:0.5rem 0 1.5rem;vertical-align:middle}._barnardos-consent-banner div{display:inline-block;white-space:nowrap}._barnardos-consent-banner button {margin:0 1em 0 0;}._barnardos-consent-banner a {text-decoration:underline}._barnardos-consent-banner ._barnardos-cookie-close{position:absolute;right:0;top:0;margin:0;line-height:1;padding:0.5rem}";
     consentBanner.appendChild(style);
+    consentBanner.appendChild(heading);
     consentBanner.appendChild(text);
     const buttonWrap = document.createElement('div');
     buttonWrap.appendChild(rejectButton);
     buttonWrap.appendChild(acceptButton);
     consentBanner.appendChild(buttonWrap);
+    consentBanner.appendChild(closeButton);
     // Put first in the DOM so keyboard and AT users can interact with it quickly
     const { firstChild } = document.body;
     firstChild.parentNode.insertBefore(consentBanner, firstChild);
+    consentBanner.parentNode.insertBefore(cookieOverlay, consentBanner);
+    // Get the focusable elements and focus the cookie notice
+    const focusableElements = consentBanner.querySelectorAll("a, button");
+    var focusableElementsArray = Array.from(focusableElements);
+    var firstFocusableElement = focusableElementsArray[0];
+    var lastFocusableElement =
+      focusableElementsArray[focusableElementsArray.length - 1];
+    consentBanner.focus();
   };
 
   // Close consent banner
   const closeConsentBanner = () => {
     consentBanner.parentNode.removeChild(consentBanner);
+    cookieOverlay.parentNode.removeChild(cookieOverlay);
     const expires = new Date();
     expires.setDate(expires.getDate() + 365);
-    document.cookie = `consentBanner=closed; expires=${expires}; domain=${cookieDomain}; path=/; SameSite=Strict`;
+    document.cookie = `consentBanner=closed; expires=${expires}; domain=.barnardos.org.uk; path=/; SameSite=Strict`;
   };
 
   // Load the scripts and trackers
@@ -73,7 +99,7 @@ module.exports = () => {
     // Add acceptance to cookie so we can load the trackers and scripts with subsequent page views
     const expires = new Date();
     expires.setDate(expires.getDate() + 365);
-    document.cookie = `consentAction=accept; expires=${expires}; domain=${cookieDomain}; path=/; SameSite=Strict`;
+    document.cookie = `consentAction=accept; expires=${expires}; domain=.barnardos.org.uk; path=/; SameSite=Strict`;
   };
 
   // Create a YYYY-MM date format
@@ -141,6 +167,20 @@ module.exports = () => {
     }
   };
 
+  const handleForwardTab = function(e) {
+    if (document.activeElement === lastFocusableElement) {
+      e.preventDefault();
+      firstFocusableElement.focus();
+    }
+  };
+
+  const handleBackwardTab = function(e) {
+    if (document.activeElement === firstFocusableElement) {
+      e.preventDefault();
+      lastFocusableElement.focus();
+    }
+  };
+
   if (getCookieValue('consentBanner') !== 'closed') {
     // Check if the banner has been loaded and if not send a session load to the counter
     if (sessionStorage.consentBannerSessionLoad !== "loaded") {
@@ -168,6 +208,39 @@ module.exports = () => {
       closeConsentBanner();
       loadScripts(window, document, 'script', 'dataLayer', gtmCode); // eslint-disable-line no-undef
       sendClickAction(e.target);
+    });
+  }
+
+  if (cookieOverlay) {
+    cookieOverlay.addEventListener("click", e => {
+      closeConsentBanner();
+      sendClickAction(e.target);
+    });
+  }
+
+  if (closeButton) {
+    closeButton.addEventListener("click", e => {
+      closeConsentBanner();
+      sendClickAction(e.target);
+    });
+  }
+
+  if (ConsentBanner) {
+    ConsentBanner.addEventListener("keydown", e => {
+      switch (e.key) {
+        case "Tab":
+          if (e.shiftKey) {
+            handleBackwardTab(e);
+          } else {
+            handleForwardTab(e);
+          }
+          break;
+        case "Escape":
+          closeConsentBanner();
+          break;
+        default:
+          break;
+      }
     });
   }
 };
