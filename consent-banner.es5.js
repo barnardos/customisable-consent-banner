@@ -31,10 +31,11 @@ window.BarnardosConsent = function(options) {
   var consentBanner = document.createElement('div');
   var rejectButton = buildButton('Reject');
   var acceptButton = buildButton('Accept');
+  var cookieOverlay = document.createElement("div");
+  var closeButton = document.createElement("button");
 
   // Build the banner
-  var buildBanner = function() {
-    var cookieOverlay = document.createElement("div");
+  var buildBanner = function() {    
     cookieOverlay.className = "_barnardos-cookie-overlay";
     cookieOverlay.id = "overlay";
     consentBanner.className = '_barnardos-consent-banner';    
@@ -42,8 +43,7 @@ window.BarnardosConsent = function(options) {
     consentBanner.setAttribute("aria-modal", "true");
     consentBanner.setAttribute("aria-labelledby", "dialog-title");
     consentBanner.setAttribute("aria-describedby", "dialog-description");
-    consentBanner.setAttribute("tabindex", "-1");
-    var closeButton = document.createElement("button");
+    consentBanner.setAttribute("tabindex", "-1");    
     closeButton.id = "close";
     closeButton.className = "_barnardos-cookie-close";
     closeButton.setAttribute("aria-label", "Close cookie tracking preference");
@@ -70,7 +70,7 @@ window.BarnardosConsent = function(options) {
     firstChild.parentNode.insertBefore(consentBanner, firstChild);
     consentBanner.parentNode.insertBefore(cookieOverlay, consentBanner);
     // Get the focusable elements and focus the cookie notice
-    const focusableElements = consentBanner.querySelectorAll("a, button");
+    var focusableElements = consentBanner.querySelectorAll("a, button");
     var focusableElementsArray = Array.from(focusableElements);
     var firstFocusableElement = focusableElementsArray[0];
     var lastFocusableElement =
@@ -230,21 +230,21 @@ window.BarnardosConsent = function(options) {
   }
 
   if (cookieOverlay) {
-    cookieOverlay.addEventListener("click", e => {
+    cookieOverlay.addEventListener("click", function(e) {
       closeConsentBanner();
       sendClickAction(e.target);
     });
   }
 
   if (closeButton) {
-    closeButton.addEventListener("click", e => {
+    closeButton.addEventListener("click", function(e) {
       closeConsentBanner();
       sendClickAction(e.target);
     });
   }
 
   if (ConsentBanner) {
-    ConsentBanner.addEventListener("keydown", e => {
+    ConsentBanner.addEventListener("keydown", function(e) {
       switch (e.key) {
         case "Tab":
           if (e.shiftKey) {

@@ -29,10 +29,11 @@ export default () => {
   const consentBanner = document.createElement('div');
   const rejectButton = buildButton('Reject');
   const acceptButton = buildButton('Accept');
+  const cookieOverlay = document.createElement("div");
+  const closeButton = document.createElement("button");
 
   // Build the banner
   const buildBanner = () => {
-    const cookieOverlay = document.createElement("div");
     cookieOverlay.className = "_barnardos-cookie-overlay";
     cookieOverlay.id = "overlay";
     consentBanner.className = '_barnardos-consent-banner';
@@ -41,7 +42,6 @@ export default () => {
     consentBanner.setAttribute("aria-labelledby", "dialog-title");
     consentBanner.setAttribute("aria-describedby", "dialog-description");
     consentBanner.setAttribute("tabindex", "-1");
-    const closeButton = document.createElement("button");
     closeButton.id = "close";
     closeButton.className = "_barnardos-cookie-close";
     closeButton.setAttribute("aria-label", "Close cookie tracking preference");
@@ -154,8 +154,8 @@ export default () => {
     };
     // Send the object
     if (window.XMLHttpRequest) {
-      var request = new XMLHttpRequest();
-      var url =
+      const request = new XMLHttpRequest();
+      const url =
         "https://barnardos-cors-anywhere.herokuapp.com/https://cookie-banner-click-counter.herokuapp.com/ajax-load-accept.php";
       request.open("POST", url, true);
       request.setRequestHeader("Content-type", "application/json");
@@ -170,14 +170,14 @@ export default () => {
     }
   };
 
-  var handleForwardTab = function(e) {
+  const handleForwardTab = function(e) {
     if (document.activeElement === lastFocusableElement) {
       e.preventDefault();
       firstFocusableElement.focus();
     }
   };
 
-  var handleBackwardTab = function(e) {
+  const handleBackwardTab = function(e) {
     if (document.activeElement === firstFocusableElement) {
       e.preventDefault();
       lastFocusableElement.focus();
@@ -215,21 +215,21 @@ export default () => {
   }
 
   if (cookieOverlay) {
-    cookieOverlay.addEventListener("click", e => {
+    cookieOverlay.addEventListener("click", (e) => {
       closeConsentBanner();
       sendClickAction(e.target);
     });
   }
 
   if (closeButton) {
-    closeButton.addEventListener("click", e => {
+    closeButton.addEventListener("click", (e) => {
       closeConsentBanner();
       sendClickAction(e.target);
     });
   }
 
   if (ConsentBanner) {
-    ConsentBanner.addEventListener("keydown", e => {
+    ConsentBanner.addEventListener("keydown", (e) => {
       switch (e.key) {
         case "Tab":
           if (e.shiftKey) {
