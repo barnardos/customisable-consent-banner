@@ -243,8 +243,8 @@ window.BarnardosConsent = function(options) {
     });
   }
 
-  if (ConsentBanner) {
-    ConsentBanner.addEventListener("keydown", function(e) {
+  if (consentBanner) {
+    consentBanner.addEventListener("keydown", function(e) {
       switch (e.key) {
         case "Tab":
           if (e.shiftKey) {

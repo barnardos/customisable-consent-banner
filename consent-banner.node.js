@@ -225,8 +225,8 @@ module.exports = () => {
     });
   }
 
-  if (ConsentBanner) {
-    ConsentBanner.addEventListener("keydown", (e) => {
+  if (consentBanner) {
+    consentBanner.addEventListener("keydown", (e) => {
       switch (e.key) {
         case "Tab":
           if (e.shiftKey) {
