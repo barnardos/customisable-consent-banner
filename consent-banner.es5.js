@@ -120,7 +120,7 @@ window.BarnardosConsent = function(options) {
   };
 
   // Send a POST request to a click tracker
-  var sendClickAction = function(button) {
+  var sendClickAction = function(closer) {
     // Make a UNIX timestamp
     var time = Math.round(new Date().getTime() / 1000);
     var date = formatDate(time);
@@ -128,7 +128,7 @@ window.BarnardosConsent = function(options) {
     var obj = {
       time: time,
       date: date,
-      value: button.id,
+      value: closer,
       subdomain: location.hostname.split('.')[0]
     };
     // Send the object
@@ -210,7 +210,7 @@ window.BarnardosConsent = function(options) {
   if (rejectButton) {
     rejectButton.addEventListener('click', function(e) {
       closeConsentBanner();
-      sendClickAction(e.target);
+      sendClickAction(e.target.id);
     });
   }
 
@@ -218,21 +218,21 @@ window.BarnardosConsent = function(options) {
     acceptButton.addEventListener('click', function(e) {
       closeConsentBanner();
       loadScripts(window, document, 'script', 'dataLayer', gtmCode);
-      sendClickAction(e.target);
+      sendClickAction(e.target.id);
     });
   }
 
   if (cookieOverlay) {
     cookieOverlay.addEventListener("click", function(e) {
       closeConsentBanner();
-      sendClickAction(e.target);
+      sendClickAction(e.target.id);
     });
   }
 
   if (closeButton) {
     closeButton.addEventListener("click", function(e) {
       closeConsentBanner();
-      sendClickAction(e.target);
+      sendClickAction(e.target.id);
     });
   }
 
@@ -248,6 +248,7 @@ window.BarnardosConsent = function(options) {
           break;
         case "Escape":
           closeConsentBanner();
+          sendClickAction("escape");
           break;
         default:
           break;

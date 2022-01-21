@@ -111,7 +111,7 @@ module.exports = () => {
   };
 
   // Send a POST request to a click tracker
-  const sendClickAction = (button) => {
+  const sendClickAction = (closer) => {
     // Make a UNIX timestamp
     const time = Math.round(new Date().getTime() / 1000);
     const date = formatDate(time);
@@ -119,7 +119,7 @@ module.exports = () => {
     const obj = {
       time: time,
       date: date,
-      value: button.id,
+      value: closer,
       subdomain: location.hostname.split('.')[0]
     };
     // Send the object
@@ -199,7 +199,7 @@ module.exports = () => {
   if (rejectButton) {
     rejectButton.addEventListener('click', (e) => {
       closeConsentBanner();
-      sendClickAction(e.target);
+      sendClickAction(e.target.id);
     });
   }
 
@@ -207,21 +207,21 @@ module.exports = () => {
     acceptButton.addEventListener('click', (e) => {
       closeConsentBanner();
       loadScripts(window, document, 'script', 'dataLayer', gtmCode); // eslint-disable-line no-undef
-      sendClickAction(e.target);
+      sendClickAction(e.target.id);
     });
   }
 
   if (cookieOverlay) {
     cookieOverlay.addEventListener("click", (e) => {
       closeConsentBanner();
-      sendClickAction(e.target);
+      sendClickAction(e.target.id);
     });
   }
 
   if (closeButton) {
     closeButton.addEventListener("click", (e) => {
       closeConsentBanner();
-      sendClickAction(e.target);
+      sendClickAction(e.target.id);
     });
   }
 
@@ -237,6 +237,7 @@ module.exports = () => {
           break;
         case "Escape":
           closeConsentBanner();
+          sendClickAction("escape");
           break;
         default:
           break;
