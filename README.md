@@ -15,6 +15,8 @@ consentBanner();
 
 And add the GTM container ID in .env or as a config variable as `GTM_CODE`.
 
+Optionally add URLs for your privacy policy and cookie policy in .env as `PRIVACY_URL` and `COOKIE_URL`. If no privacy URL is declared it defaults to https://www.barnardos.org.uk/privacy-notice, and if no cookie URL is declared it defaults to https://www.barnardos.org.uk/cookie-notice.
+
 ### Option 2: <abbr title="ECMAScript Module">ESM</a>
 
 In your HTML add the following:
@@ -31,6 +33,8 @@ consentBanner();
 
 And add the GTM container ID in .env or as a config variable as `GTM_CODE`.
 
+Optionally add URLs for your privacy policy and cookie policy in .env as `PRIVACY_URL` and `COOKIE_URL`. If no privacy URL is declared it defaults to https://www.barnardos.org.uk/privacy-notice, and if no cookie URL is declared it defaults to https://www.barnardos.org.uk/cookie-notice.
+
 ### Option 3: script element in HTML
 
 Put the following near the end of the body element, replacing GTM-XXXXXX with the correct ID.
@@ -43,9 +47,25 @@ Put the following near the end of the body element, replacing GTM-XXXXXX with th
 Self hosting is recommended but if it's not possible you can use:
 
 ```html
-<script src="https://unpkg.com/@barnardoswebteam/consent-banner@0.1.0/consent-banner.node.js"></script>
+<script src="https://unpkg.com/@barnardoswebteam/consent-banner@latest/consent-banner.es5.js"></script>
 <script>BarnardosConsent({'gtmCode':'GTM-XXXXXX'});</script>
 ```
+
+Optionally add URLs for your privacy policy and cookie policy to the code like so:
+
+```html
+<script>
+BarnardosConsent(
+  {
+    'gtmCode': 'GTM-XXXXXX',
+    'privacyURL': 'https://your-domain/privacy-policy',
+    'cookieURL': 'https://your-domain/cookie-policy'
+  }
+);
+</script>
+```
+
+Both are optional, and if either it missing they will default to https://www.barnardos.org.uk/privacy-notice and https://www.barnardos.org.uk/cookie-notice respectively.
 
 ### Updating
 
