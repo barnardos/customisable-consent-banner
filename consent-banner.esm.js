@@ -81,7 +81,7 @@ export default () => {
     consentBanner.parentNode.insertBefore(cookieOverlay, consentBanner);
     // Get the focusable elements and focus the cookie notice
     const focusableElements = consentBanner.querySelectorAll("a, button");
-    const focusableElementsArray = Array.from(focusableElements);
+    const focusableElementsArray = [].slice.call(focusableElements);
     const firstFocusableElement = focusableElementsArray[0];
     const lastFocusableElement =
       focusableElementsArray[focusableElementsArray.length - 1];
