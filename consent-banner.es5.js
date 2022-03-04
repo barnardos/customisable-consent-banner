@@ -75,12 +75,12 @@ window.BarnardosConsent = function(options) {
     consentBanner.appendChild(buttonWrap);
     consentBanner.appendChild(closeButton);
     // Put first in the DOM so keyboard and AT users can interact with it quickly
-    var { firstChild } = document.body;
+    var firstChild = document.body.firstChild;
     firstChild.parentNode.insertBefore(consentBanner, firstChild);
     consentBanner.parentNode.insertBefore(cookieOverlay, consentBanner);
     // Get the focusable elements and focus the cookie notice
     var focusableElements = consentBanner.querySelectorAll("a, button");
-    var focusableElementsArray = Array.from(focusableElements);
+    var focusableElementsArray = Array.prototype.slice.call(focusableElements);
     var firstFocusableElement = focusableElementsArray[0];
     var lastFocusableElement =
       focusableElementsArray[focusableElementsArray.length - 1];
