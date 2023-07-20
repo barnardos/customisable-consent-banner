@@ -78,3 +78,9 @@ Steps for creating a git submodule:
 3. Type `git submodule init` and press <kbd>enter</kbd>.
 4. `cd` out of the submodule into the parent repository.
 5. Add and commit the new files to the parent repository.
+
+## Safari and Firefox
+
+Safari and Firefox now both delete scripted storage fairly quickly. In Safari's case it can be 24 hours. Therefore the consent banner is shown on repeat visits, which is making the banner even more annoying than it already is. 
+
+Therefore it's recommended re-setting the appropriate cookies with the server-side language of your choice, with a 1 year expiration. This has been cleared by the Barnardo's Head of Information Governance and Data Protection Officer.
