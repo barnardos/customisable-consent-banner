@@ -4,7 +4,7 @@
 
 ### Option 1: npm install / yarn add
 
-Run `npm install @barnardoswebteam/consent-banner` or `yarn add @barnardoswebteam/consent-banner`.
+Run `npm install @barnardoswebteam/customisable-consent-banner` or `yarn add @barnardoswebteam/customisable-consent-banner`.
 
 For the standard consent banner, in your code add the following:
 
