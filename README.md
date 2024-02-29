@@ -6,7 +6,7 @@
 
 Run `npm install @barnardoswebteam/consent-banner` or `yarn add @barnardoswebteam/consent-banner`.
 
-In your code add the following:
+For the standard consent banner, in your code add the following:
 
 ```js
 const consentBanner = require('@barnardoswebteam/consent-banner');
@@ -15,11 +15,26 @@ consentBanner();
 
 And add the GTM container ID in .env or as a config variable as `GTM_CODE`.
 
-Optionally add URLs for your privacy policy and cookie policy in .env as `PRIVACY_URL` and `COOKIE_URL`. If no privacy URL is declared it defaults to https://www.barnardos.org.uk/privacy-notice, and if no cookie URL is declared it defaults to https://www.barnardos.org.uk/cookie-notice.
+You can customise the standard consent banner by passing options, either in .env in block-caps snake case, or as camelCase config variables in an options hash.
+
+- PRIVACY_URL: URL for your privacy policy. Defaults to https://www.barnardos.org.uk/privacy-notice.
+- COOKIE_URL: URL for your cookie policy. Defaults to https://www.barnardos.org.uk/cookie-notice.
+- BANNER_HEADING: Heading text for the consent banner. Defaults to "Cookie tracking preferences".
+- BANNER_CONTENT: Custom text content (but not buttons)
+- CLOSE_BUTTON_CONTENT: Custom text or an svg for the close button. Defaults to "&#x2715;".
+- ADDITIONAL_SCRIPTS: Additional tracking scripts to be ran when the consent banner is accepted. If you have other scripts to use instead, GTM_CODE is optional and omitting it will prevent the banner attempting to load GTM scripts. Defaults to none.
+- RELOAD_ON_ACCEPT: set this to ```true``` to set the cookie and then reload the page if you have scripts which cannot be provided above for architectural reasons, and which have loaded with defaults that cannot be easily toggled at run time. Defaults to ```false```.
+- STYLE_CONTENT: Custom styles for the consent banner. Defaults to those outlined in ```consent-banner.template.css``` in the package. You can copy this template to help you customise the styles.
+- USE_EXTERNAL_STYLESHEET: use this instead of STYLE_CONTENT to link to an external stylesheet provied by your application. You can copy the template above to your own stylesheet to help you customise the styles.
+- BUTTON_ELEMENT: If you are using your own stylesheet you may prefer to use a different element for the buttons. Defaults to "button".
+- BUTTON_CLASS: If you are using your own stylesheet you may prefer your own class name for the button styling. Defaults to "_barnardos-consent-banner__button".
+- CLOSE_BUTTON_CLASS: If you are using your own stylesheet you may prefer your own class name for the close button styling. Defaults to "_barnardos-cookie-close".
+
+If you have extensively customised the styles and the banner content, you can reduce the size of your JavaScript by bypassing the ```ConsentBanner``` wrapper (```barnardosConsent``` if using es5) and calling ```ConsentBanner.Custom``` (or ```barnardosCustomConsent``` if using es5) directly to avoid loading the redundant default styles and content.
 
 ### Option 2: <abbr title="ECMAScript Module">ESM</a>
 
-In your HTML add the following:
+For the standard consent banner, in your HTML add the following:
 
 ```html
 <script type="module" src="main.js"></script>
@@ -33,25 +48,25 @@ consentBanner();
 
 And add the GTM container ID in .env or as a config variable as `GTM_CODE`.
 
-Optionally add URLs for your privacy policy and cookie policy in .env as `PRIVACY_URL` and `COOKIE_URL`. If no privacy URL is declared it defaults to https://www.barnardos.org.uk/privacy-notice, and if no cookie URL is declared it defaults to https://www.barnardos.org.uk/cookie-notice.
+You can customise the standard consent banner by passing options, either in .env in block-caps snake case, or as camelCase config variables in an options hash. See Option 1 above for option syntax.
 
 ### Option 3: script element in HTML
 
-Put the following near the end of the body element, replacing GTM-XXXXXX with the correct ID.
+For the standard consent banner, put the following near the end of the body element, replacing GTM-XXXXXX with the correct ID.
 
 ```html
 <script src="path/to/consent-banner.es5.js"></script>
 <script>BarnardosConsent({'gtmCode':'GTM-XXXXXX'});</script>
 ```
 
-Self hosting is recommended but if it's not possible you can use:
+Self hosting is recommended ~~but if it's not possible you can use:~~
 
-```html
+~~```html
 <script src="https://unpkg.com/@barnardoswebteam/consent-banner@latest/consent-banner.es5.js"></script>
 <script>BarnardosConsent({'gtmCode':'GTM-XXXXXX'});</script>
-```
+```~~
 
-Optionally add URLs for your privacy policy and cookie policy to the code like so:
+You can customise the standard consent banner by passing camelCase config variables in an options hash. See Option 1 above for option syntax. For example:
 
 ```html
 <script>
@@ -59,13 +74,13 @@ BarnardosConsent(
   {
     'gtmCode': 'GTM-XXXXXX',
     'privacyURL': 'https://your-domain/privacy-policy',
-    'cookieURL': 'https://your-domain/cookie-policy'
+    'cookieURL': 'https://your-domain/cookie-policy',
+    'bannerHeading': 'Your custom heading',
+    'useExternalStylesheet': true
   }
 );
 </script>
 ```
-
-Both are optional, and if either it missing they will default to https://www.barnardos.org.uk/privacy-notice and https://www.barnardos.org.uk/cookie-notice respectively.
 
 ### Updating
 
@@ -81,6 +96,6 @@ Steps for creating a git submodule:
 
 ## Safari and Firefox
 
-Safari and Firefox now both delete scripted storage fairly quickly. In Safari's case it can be 24 hours. Therefore the consent banner is shown on repeat visits, which is making the banner even more annoying than it already is. 
+Safari and Firefox now both delete scripted storage fairly quickly. In Safari's case it can be 24 hours. Therefore the consent banner is shown on repeat visits, which is making the banner even more annoying than it already is.
 
 Therefore it's recommended re-setting the appropriate cookies with the server-side language of your choice, with a 1 year expiration. This has been cleared by the Barnardo's Head of Information Governance and Data Protection Officer.

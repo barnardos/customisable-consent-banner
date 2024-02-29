@@ -1,9 +1,14 @@
 //common options routines
 const check = (options) => {
-  let i = 1, key;
-  while (key = arguments[i]) {
-    const hit = options[key] || process.env[key.replace(/(a-z)([A-Z])/g, '$1_$2').toUpperCase()];
-    if (hit) { return hit }
+  let i = 1,
+    key;
+  while ((key = arguments[i])) {
+    const hit =
+      options[key] ||
+      process.env[key.replace(/(a-z)([A-Z])/g, "$1_$2").toUpperCase()];
+    if (hit) {
+      return hit;
+    }
     i++;
   }
   return null;
@@ -14,11 +19,11 @@ const set_static_defaults = (options, defaults) => {
     options[key] = check(options, key) || defaults[key];
   });
   return options;
-}
+};
 
 // Compatibility function, use this as entry point
 // if Barnardos banner default content is required
-function barnardosConsent = (options) => {
+const barnardosConsent = (options) => {
   const gtmCode = options.check(gtmCode);
   if (!gtmCode) {
     return;
@@ -39,12 +44,14 @@ function barnardosConsent = (options) => {
 
 // new entry point without Barnardos default content
 const barnardosCustomConsent = (options) => {
-  const missingMandatoryOptions = "bannerHeading bannerContent"
-    .split(" ")
-    .map(option => check(options, option) ? "" : option)
-    .filter(option => option.length)
-    .join(",") +
-    check(options, "useExternalStylesheet", "styleContent") ? "" : ",styleContent";
+  const missingMandatoryOptions =
+    "bannerHeading bannerContent"
+      .split(" ")
+      .map((option) => (check(options, option) ? "" : option))
+      .filter((option) => option.length)
+      .join(",") + check(options, "useExternalStylesheet", "styleContent")
+      ? ""
+      : ",styleContent";
 
   if (missingMandatoryOptions.length) {
     console.warn("missing mandatory options:", missingMandatoryOptions);
@@ -58,13 +65,13 @@ const barnardosCustomConsent = (options) => {
     closeButtonClass: "_barnardos-cookie-close",
   });
 
-  let scripts = check(options, 'additionalScripts');
+  let scripts = check(options, "additionalScripts");
 
   const getCookieValue = (name) => {
     const result = document.cookie.match(
       `(^|[^;]+)\\s*${name}\\s*=\\s*([^;]+)`,
     );
-    return result ? result.pop() : '';
+    return result ? result.pop() : "";
   };
 
   // Build a button
@@ -83,9 +90,9 @@ const barnardosCustomConsent = (options) => {
   };
 
   // Create the two buttons and a placeholder for the banner
-  const consentBanner = document.createElement('div');
-  const rejectButton = buildButton('Reject');
-  const acceptButton = buildButton('Accept');
+  const consentBanner = document.createElement("div");
+  const rejectButton = buildButton("Reject");
+  const acceptButton = buildButton("Accept");
   const cookieOverlay = document.createElement("div");
   const closeButton = document.createElement(options.buttonElement);
   if (options.buttonElement == "a") {
@@ -95,7 +102,7 @@ const barnardosCustomConsent = (options) => {
   const buildBanner = () => {
     cookieOverlay.className = "_barnardos-cookie-overlay";
     cookieOverlay.id = "overlay";
-    consentBanner.className = '_barnardos-consent-banner';
+    consentBanner.className = "_barnardos-consent-banner";
     consentBanner.setAttribute("role", "dialog");
     consentBanner.setAttribute("aria-modal", "true");
     consentBanner.setAttribute("aria-labelledby", "dialog-title");
@@ -109,17 +116,17 @@ const barnardosCustomConsent = (options) => {
     heading.textContent = options.bannerHeading;
     heading.className = "_barnardos-cookie-heading";
     heading.id = "dialog-title";
-    const text = document.createElement('p');
+    const text = document.createElement("p");
     text.id = "dialog-description";
     text.innerHTML = options.bannerContent;
     if (!options.useExternalStylesheet) {
-      const style = document.createElement('style');
+      const style = document.createElement("style");
       style.textContent = options.styleContent;
       consentBanner.appendChild(style);
     }
     consentBanner.appendChild(heading);
     consentBanner.appendChild(text);
-    const buttonWrap = document.createElement('div');
+    const buttonWrap = document.createElement("div");
     buttonWrap.appendChild(rejectButton);
     buttonWrap.appendChild(acceptButton);
     consentBanner.appendChild(buttonWrap);
@@ -159,7 +166,7 @@ const barnardosCustomConsent = (options) => {
         });
         const f = d.getElementsByTagName(s)[0];
         const j = d.createElement(s);
-        const dl = l != 'dataLayer' ? `&l=${l}` : '';
+        const dl = l != "dataLayer" ? `&l=${l}` : "";
         j.async = true;
         j.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`;
         f.parentNode.insertBefore(j, f);
@@ -170,8 +177,8 @@ const barnardosCustomConsent = (options) => {
     return;
   }
 
-  var loadScripts = function() {
-    scripts.forEach(function(script) {
+  var loadScripts = function () {
+    scripts.forEach(function (script) {
       script.script(...script.args);
     });
 
@@ -185,25 +192,25 @@ const barnardosCustomConsent = (options) => {
   const formatDate = (timestamp) => {
     const date = new Date(timestamp * 1000);
     const year = date.getFullYear();
-    const month = (`0${date.getMonth() + 1}`).slice(-2);
+    const month = `0${date.getMonth() + 1}`.slice(-2);
     return `${year}-${month}`;
   };
 
-  const handleForwardTab = function(e) {
+  const handleForwardTab = function (e) {
     if (document.activeElement === lastFocusableElement) {
       e.preventDefault();
       firstFocusableElement.focus();
     }
   };
 
-  const handleBackwardTab = function(e) {
+  const handleBackwardTab = function (e) {
     if (document.activeElement === firstFocusableElement) {
       e.preventDefault();
       lastFocusableElement.focus();
     }
   };
 
-  if (getCookieValue('consentBanner') !== 'closed') {
+  if (getCookieValue("consentBanner") !== "closed") {
     // Check if the banner has been loaded and if not send a session load to the counter
     if (sessionStorage.consentBannerSessionLoad !== "loaded") {
       sessionStorage.consentBannerSessionLoad = "loaded";
@@ -212,19 +219,19 @@ const barnardosCustomConsent = (options) => {
   }
 
   // If cookies are previously accepted run the function to load the trackers and scripts
-  if (getCookieValue('consentAction') === 'accept') {
+  if (getCookieValue("consentAction") === "accept") {
     loadScripts();
   }
 
   // Listeners
   if (rejectButton) {
-    rejectButton.addEventListener('click', (e) => {
+    rejectButton.addEventListener("click", (e) => {
       closeConsentBanner();
     });
   }
 
   if (acceptButton) {
-    acceptButton.addEventListener('click', (e) => {
+    acceptButton.addEventListener("click", (e) => {
       closeConsentBanner();
       loadScripts();
     });
