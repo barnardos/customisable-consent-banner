@@ -1,4 +1,6 @@
 "use strict";
+// Compatibility function, use this as entry point
+// if Barnardos banner default content is required
 window.BarnardosConsent = function (options) {
   if (!options.gtmCode) {
     return;
@@ -7,10 +9,6 @@ window.BarnardosConsent = function (options) {
     privacyURL: "https://www.barnardos.org.uk/privacy-notice",
     cookieURL: "https://www.barnardos.org.uk/cookie-notice",
     bannerHeading: "Cookie tracking preference",
-    buttonClass: "_barnardos-consent-banner__button",
-    buttonElement: "button",
-    closeButtonContent: "&#x2715;",
-    closeButtonClass: "_barnardos-cookie-close",
     styleContent:
       "._barnardos-cookie-overlay{z-index:3;position:fixed;top:0;left:0;width:100%;height:100%;background-color: rgba(0,0,0,0.7);}._barnardos-consent-banner {background-color:#fff;padding:0.5rem 1rem 1rem;position:fixed;top:10%;right:5%;bottom:10%;left:5%;z-index:4;overflow-y:scroll}@media screen and (min-width:360px) and (min-height:600px){._barnardos-consent-banner {top:50%;left:50%;bottom:30%;width:90%;max-width:36rem;transform:translate(-50%,-50%);bottom:auto}}._barnardos-consent-banner:focus{outline:none}._barnardos-consent-banner h2 {margin-right:2rem}._barnardos-consent-banner p {display:inline-block;margin:0.5rem 0 1.5rem;vertical-align:middle}._barnardos-consent-banner div{display:inline-block;white-space:nowrap}._barnardos-consent-banner button {appearance: none; background-color: #558200; border: 1px solid #558200; border-radius: 0; color: #fff; display: inline-block; font-size: 1.125rem; font-weight: 800; letter-spacing: 0; line-height: 1.5rem; padding: 0.5rem 2rem; text-align: center; user-select: none; vertical-align: middle; white-space: nowrap; margin:0 1em 0 0;}._barnardos-consent-banner button:hover, ._barnardos-consent-banner button:focus { background-color: #192700; border-color: #192700; }._barnardos-consent-banner a {text-decoration:underline}._barnardos-consent-banner ._barnardos-cookie-close{position:absolute;right:0;top:0;margin:0;line-height:1;padding:0.5rem}",
   };
@@ -24,9 +22,10 @@ window.BarnardosConsent = function (options) {
   barnardosCustomConsent(options);
 };
 
+// new entry point without Barnardos default content
 function barnardosCustomConsent(options) {
   var missingMandatoryOptions = "missing mandatory options";
-  "bannerHeading bannerContent buttonClass buttonElement closeButtonContent closeButtonClass styleContent"
+  "bannerHeading bannerContent"
     .split(" ")
     .forEach(
       (option) =>
@@ -43,7 +42,17 @@ function barnardosCustomConsent(options) {
     return;
   }
 
-  var gtmCode = options.gtmCode;
+  var static_defaults = {
+    buttonClass: "_barnardos-consent-banner__button",
+    buttonElement: "button",
+    closeButtonContent: "&#x2715;",
+    closeButtonClass: "_barnardos-cookie-close",
+  };
+  Object.keys(static_defaults).forEach((key) => {
+    options[key] = options[key] || static_defaults[key];
+  });
+
+  var scripts = options.additionalScripts;
 
   var getCookieValue = function (name) {
     var result = document.cookie.match(
@@ -137,7 +146,7 @@ function barnardosCustomConsent(options) {
 
   // Load the scripts and trackers
   options.gtmCode &&
-    (options.scripts = options.scripts || []).push({
+    (scripts = scripts || []).push({
       // GTM script using the minified code GTM gives us
       name: "GTM",
       script: function (w, d, s, l, i) {
@@ -155,12 +164,12 @@ function barnardosCustomConsent(options) {
       },
       args: [window, document, "script", "dataLayer", options.gtmCode],
     });
-  if (!options.scripts) {
+  if (!scripts) {
     return;
   }
 
   var loadScripts = function () {
-    options.scripts.forEach(function (script) {
+    scripts.forEach(function (script) {
       script.script(...script.args);
     });
     // Add acceptance to cookie so we can load the
@@ -220,8 +229,7 @@ function barnardosCustomConsent(options) {
     acceptButton.addEventListener("click", function (e) {
       closeConsentBanner();
       loadScripts();
-      sendClickAction(e.target.id);
-      options.onAccept && options.onAccept();
+      options.reloadOnAccept && location.reload();
     });
   }
 
