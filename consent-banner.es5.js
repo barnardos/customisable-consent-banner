@@ -181,64 +181,6 @@ function barnardosCustomConsent(options) {
     return year + "-" + month;
   };
 
-  // Send a POST request to a click tracker
-  var sendClickAction = function (closer) {
-    // Make a UNIX timestamp
-    var time = Math.round(new Date().getTime() / 1000);
-    var date = formatDate(time);
-    // Build an object to send as JSON
-    var obj = {
-      time: time,
-      date: date,
-      value: closer,
-      subdomain: location.hostname.split(".")[0],
-    };
-    // Send the object
-    if (window.XMLHttpRequest) {
-      var request = new XMLHttpRequest();
-      var url =
-        "https://barnardos-cors-anywhere.herokuapp.com/https://cookie-banner-click-counter.herokuapp.com/ajax-accept.php";
-      request.open("POST", url, true);
-      request.setRequestHeader("Content-type", "application/json");
-      request.onreadystatechange = function () {
-        if (request.readyState === XMLHttpRequest.DONE) {
-          if (request.status !== 200) {
-            console.error("Error sending data to click action tracker");
-          }
-        }
-      };
-      request.send(JSON.stringify(obj));
-    }
-  };
-
-  // Send a banner load event to the counter
-  var sendLoad = function () {
-    // Make a UNIX timestamp
-    var time = Math.round(new Date().getTime() / 1000);
-    var date = formatDate(time);
-    // Build an object to send as JSON
-    var obj = {
-      time: time,
-      date: date,
-    };
-    // Send the object
-    if (window.XMLHttpRequest) {
-      var request = new XMLHttpRequest();
-      var url =
-        "https://barnardos-cors-anywhere.herokuapp.com/https://cookie-banner-click-counter.herokuapp.com/ajax-load-accept.php";
-      request.open("POST", url, true);
-      request.setRequestHeader("Content-type", "application/json");
-      request.onreadystatechange = function () {
-        if (request.readyState === XMLHttpRequest.DONE) {
-          if (request.status !== 200) {
-            console.error("Error sending data to click action tracker");
-          }
-        }
-      };
-      request.send(JSON.stringify(obj));
-    }
-  };
-
   var handleForwardTab = function (e) {
     if (document.activeElement === lastFocusableElement) {
       e.preventDefault();
@@ -256,7 +198,6 @@ function barnardosCustomConsent(options) {
   if (getCookieValue("consentBanner") !== "closed") {
     // Check if the banner has been loaded and if not send a session load to the counter
     if (sessionStorage.consentBannerSessionLoad !== "loaded") {
-      sendLoad();
       sessionStorage.consentBannerSessionLoad = "loaded";
     }
     buildBanner();
@@ -272,7 +213,6 @@ function barnardosCustomConsent(options) {
   if (rejectButton) {
     rejectButton.addEventListener("click", function (e) {
       closeConsentBanner();
-      sendClickAction(e.target.id);
     });
   }
 
@@ -288,14 +228,12 @@ function barnardosCustomConsent(options) {
   if (cookieOverlay) {
     cookieOverlay.addEventListener("click", function (e) {
       closeConsentBanner();
-      sendClickAction(e.target.id);
     });
   }
 
   if (closeButton) {
     closeButton.addEventListener("click", function (e) {
       closeConsentBanner();
-      sendClickAction(e.target.id);
     });
   }
 
@@ -311,7 +249,6 @@ function barnardosCustomConsent(options) {
           break;
         case "Escape":
           closeConsentBanner();
-          sendClickAction("escape");
           break;
         default:
           break;

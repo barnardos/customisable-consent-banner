@@ -115,63 +115,6 @@ module.exports = (options) => {
     return `${year}-${month}`;
   };
 
-  // Send a POST request to a click tracker
-  const sendClickAction = (closer) => {
-    // Make a UNIX timestamp
-    const time = Math.round(new Date().getTime() / 1000);
-    const date = formatDate(time);
-    // Build an object to send as JSON
-    const obj = {
-      time: time,
-      date: date,
-      value: closer,
-      subdomain: location.hostname.split('.')[0]
-    };
-    // Send the object
-    if (window.XMLHttpRequest) {
-      const request = new XMLHttpRequest();
-      const url = 'https://barnardos-cors-anywhere.herokuapp.com/https://cookie-banner-click-counter.herokuapp.com/ajax-accept.php';
-      request.open('POST', url, true);
-      request.setRequestHeader('Content-type', 'application/json');
-      request.onreadystatechange = function () {
-        if (request.readyState === XMLHttpRequest.DONE) {
-          if (request.status !== 200) {
-            console.error('Error sending data to click action tracker');
-          }
-        }
-      };
-      request.send(JSON.stringify(obj));
-    }
-  };
-
-  // Send a banner load event to the counter
-  const sendLoad = () => {
-    // Make a UNIX timestamp
-    const time = Math.round(new Date().getTime() / 1000);
-    const date = formatDate(time);
-    // Build an object to send as JSON
-    const obj = {
-      time: time,
-      date: date
-    };
-    // Send the object
-    if (window.XMLHttpRequest) {
-      const request = new XMLHttpRequest();
-      const url =
-        "https://barnardos-cors-anywhere.herokuapp.com/https://cookie-banner-click-counter.herokuapp.com/ajax-load-accept.php";
-      request.open("POST", url, true);
-      request.setRequestHeader("Content-type", "application/json");
-      request.onreadystatechange = function() {
-        if (request.readyState === XMLHttpRequest.DONE) {
-          if (request.status !== 200) {
-            console.error("Error sending data to click action tracker");
-          }
-        }
-      };
-      request.send(JSON.stringify(obj));
-    }
-  };
-
   const handleForwardTab = function(e) {
     if (document.activeElement === lastFocusableElement) {
       e.preventDefault();
@@ -189,7 +132,6 @@ module.exports = (options) => {
   if (getCookieValue('consentBanner') !== 'closed') {
     // Check if the banner has been loaded and if not send a session load to the counter
     if (sessionStorage.consentBannerSessionLoad !== "loaded") {
-      sendLoad();
       sessionStorage.consentBannerSessionLoad = "loaded";
     }
     buildBanner();
@@ -204,7 +146,6 @@ module.exports = (options) => {
   if (rejectButton) {
     rejectButton.addEventListener('click', (e) => {
       closeConsentBanner();
-      sendClickAction(e.target.id);
     });
   }
 
@@ -212,21 +153,18 @@ module.exports = (options) => {
     acceptButton.addEventListener('click', (e) => {
       closeConsentBanner();
       loadScripts(window, document, 'script', 'dataLayer', gtmCode); // eslint-disable-line no-undef
-      sendClickAction(e.target.id);
     });
   }
 
   if (cookieOverlay) {
     cookieOverlay.addEventListener("click", (e) => {
       closeConsentBanner();
-      sendClickAction(e.target.id);
     });
   }
 
   if (closeButton) {
     closeButton.addEventListener("click", (e) => {
       closeConsentBanner();
-      sendClickAction(e.target.id);
     });
   }
 
@@ -242,7 +180,6 @@ module.exports = (options) => {
           break;
         case "Escape":
           closeConsentBanner();
-          sendClickAction("escape");
           break;
         default:
           break;
