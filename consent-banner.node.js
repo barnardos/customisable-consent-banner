@@ -1,5 +1,5 @@
 //common options routines
-const check = (options) => {
+function check(options) {
   let i = 1,
     key;
   while ((key = arguments[i])) {
@@ -12,7 +12,7 @@ const check = (options) => {
     i++;
   }
   return null;
-};
+}
 
 const set_static_defaults = (options, defaults) => {
   Object.keys(defaults).forEach((key) => {

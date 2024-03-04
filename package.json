@@ -1,14 +1,16 @@
 {
   "name": "@barnardos/customisable-consent-banner",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Customisable version of Barnardo's consent banner.",
   "main": "consent-banner.node.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "type": "module",
+  "module": "consent-banner.esm.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/barnardos/consent-banner.git"
+    "url": "git+https://github.com/barnardos/customisable-consent-banner.git"
   },
   "keywords": ["barnardos", "customisable", "cookies", "consent", "banner"],
   "author": "Barnardo's Innovation Lab Team<InnovationLabTeam@barnardos.org.uk> (https://www.barnardos.org.uk)",
