@@ -5,8 +5,9 @@ function check(options) {
   while ((key = arguments[i])) {
     const hit =
       options[key] ||
-      (process &&
-        process.env[key.replace(/(a-z)([A-Z])/g, "$1_$2").toUpperCase()]);
+      (typeof process === "undefined"
+        ? null
+        : process.env[key.replace(/(a-z)([A-Z])/g, "$1_$2").toUpperCase()]);
     if (hit) {
       return hit;
     }
