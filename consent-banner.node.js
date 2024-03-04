@@ -24,7 +24,7 @@ const set_static_defaults = (options, defaults) => {
 // Compatibility function, use this as entry point
 // if Barnardos banner default content is required
 const barnardosConsent = (options) => {
-  const gtmCode = options.check(gtmCode);
+  const gtmCode = check(options, "gtmCode");
   if (!gtmCode) {
     return;
   }
