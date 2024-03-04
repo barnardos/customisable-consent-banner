@@ -1,6 +1,6 @@
 {
   "name": "@barnardos/customisable-consent-banner",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Customisable version of Barnardo's consent banner.",
   "main": "consent-banner.node.js",
   "scripts": {

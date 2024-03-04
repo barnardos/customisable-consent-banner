@@ -5,7 +5,8 @@ function check(options) {
   while ((key = arguments[i])) {
     const hit =
       options[key] ||
-      process.env[key.replace(/(a-z)([A-Z])/g, "$1_$2").toUpperCase()];
+      (process &&
+        process.env[key.replace(/(a-z)([A-Z])/g, "$1_$2").toUpperCase()]);
     if (hit) {
       return hit;
     }
@@ -94,7 +95,7 @@ export const barnardosCustomConsent = (options) => {
   const rejectButton = buildButton("Reject");
   const acceptButton = buildButton("Accept");
   const cookieOverlay = document.createElement("div");
-  const closeButton = document.createElement(options.buttonElement);
+  const closeButton = document.createElement(options.closeButtonElement);
   if (options.buttonElement == "a") {
     closeButton.setAttribute("href", "#");
   }
