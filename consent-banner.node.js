@@ -63,6 +63,7 @@ const barnardosCustomConsent = (options) => {
     buttonElement: "button",
     closeButtonContent: "&#x2715;",
     closeButtonClass: "_barnardos-cookie-close",
+    closeButtonElement: "button",
   });
 
   let scripts = check(options, "additionalScripts");
@@ -94,7 +95,7 @@ const barnardosCustomConsent = (options) => {
   const rejectButton = buildButton("Reject");
   const acceptButton = buildButton("Accept");
   const cookieOverlay = document.createElement("div");
-  const closeButton = document.createElement(options.buttonElement);
+  const closeButton = document.createElement(options.closeButtonElement);
   if (options.buttonElement == "a") {
     closeButton.setAttribute("href", "#");
   }

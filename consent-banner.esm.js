@@ -62,6 +62,7 @@ export const barnardosCustomConsent = (options) => {
     buttonElement: "button",
     closeButtonContent: "&#x2715;",
     closeButtonClass: "_barnardos-cookie-close",
+    closeButtonElement: "button",
   });
 
   let scripts = check(options, "additionalScripts");
