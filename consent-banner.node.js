@@ -5,13 +5,11 @@ function check(options) {
     key;
   while ((key = arguments[i])) {
     const snakeCapsKey = key.replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase();
-    if (options.hasOwnProperty(key)) {
-      found[key] = options[key];
-      return found;
+    if (options[key]) {
+      return options[key];
     }
-    if (process.env.hasOwnProperty(snakeCapsKey)) {
-      found[key] = process.env[snakeCapsKey];
-      return found;
+    if (process.env[snakeCapsKey]) {
+      return process.env[snakeCapsKey];
     }
     i++;
   }
@@ -20,8 +18,7 @@ function check(options) {
 
 const set_static_defaults = (options, defaults) => {
   Object.keys(defaults).forEach((key) => {
-    const found = check(options, key);
-    options[key] = found ? found[key] : defaults[key];
+    options[key] = check(options, key) || defaults[key];
   });
   return options;
 };
@@ -91,7 +88,9 @@ const barnardosCustomConsent = (options) => {
       value +
       "; expires=" +
       expires +
-      (options.restrictDomain ? ";domain=" + options.restrictDomain : "") +
+      (options.restrictDomain != "*"
+        ? ";domain=" + options.restrictDomain
+        : "") +
       "; path=/; SameSite=Strict";
   };
 

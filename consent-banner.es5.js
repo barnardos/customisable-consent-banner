@@ -2,7 +2,7 @@
 //common options routines
 function set_static_defaults(options, defaults) {
   Object.keys(defaults).forEach((key) => {
-    options[key] = options.hasOwnProperty(key) ? options[key] : defaults[key];
+    options[key] = options[key] || defaults[key];
   });
   return options;
 }
@@ -71,7 +71,9 @@ function barnardosCustomConsent(options) {
       value +
       "; expires=" +
       expires +
-      (options.restrictDomain ? ";domain=" + options.restrictDomain : "") +
+      (options.restrictDomain != "*"
+        ? ";domain=" + options.restrictDomain
+        : "") +
       "; path=/; SameSite=Strict";
   };
 
