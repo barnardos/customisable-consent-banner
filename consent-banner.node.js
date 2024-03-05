@@ -251,6 +251,7 @@ const barnardosCustomConsent = (options) => {
     acceptButton.addEventListener("click", (e) => {
       closeConsentBanner();
       loadScripts();
+      options.reloadOnAccept && location.reload();
     });
   }
 
