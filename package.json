@@ -1,27 +1,24 @@
 {
-  "name": "@barnardoswebteam/consent-banner",
-  "version": "0.4.3",
-  "description": "Barnardo's consent banner.",
+  "name": "@barnardos/customisable-consent-banner",
+  "version": "0.3.0",
+  "description": "Customisable version of Barnardo's consent banner.",
   "main": "consent-banner.node.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "type": "module",
+  "module": "consent-banner.esm.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/barnardos/consent-banner.git"
+    "url": "git+https://github.com/barnardos/customisable-consent-banner.git"
   },
-  "keywords": [
-    "barnardos",
-    "cookies",
-    "consent",
-    "banner"
-  ],
-  "author": "Barnardo's Web Team <websiteteam@barnardos.org.uk> (https://www.barnardos.org.uk)",
+  "keywords": ["barnardos", "customisable", "cookies", "consent", "banner"],
+  "author": "Barnardo's Innovation Lab Team<InnovationLabTeam@barnardos.org.uk> (https://www.barnardos.org.uk)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/barnardos/consent-banner/issues"
+    "url": "https://github.com/barnardos/customisable-consent-banner/issues"
   },
-  "homepage": "https://github.com/barnardos/consent-banner#readme",
+  "homepage": "https://github.com/barnardos/customisable-consent-banner#readme",
   "devDependencies": {
     "eslint": "^7.25.0"
   }
