@@ -1,15 +1,20 @@
 //common options routines
 function check(options) {
   let i = 1,
+    found = {},
     key;
   while ((key = arguments[i])) {
-    const hit =
-      options[key] ||
-      (typeof process === "undefined"
-        ? null
-        : process.env[key.replace(/(a-z)([A-Z])/g, "$1_$2").toUpperCase()]);
-    if (hit) {
-      return hit;
+    const snakeCapsKey = key.replace(/([a-z])([A-Z])/g, "$1_$2").toUpperCase();
+    if (options.hasOwnProperty(key)) {
+      found[key] = options[key];
+      return found;
+    }
+    if (
+      typeof process !== "undefined" &&
+      process.env.hasOwnProperty(snakeCapsKey)
+    ) {
+      found[key] = process.env[snakeCapsKey];
+      return found;
     }
     i++;
   }
@@ -18,7 +23,8 @@ function check(options) {
 
 const set_static_defaults = (options, defaults) => {
   Object.keys(defaults).forEach((key) => {
-    options[key] = check(options, key) || defaults[key];
+    const found = check(options, key);
+    options[key] = found ? found[key] : defaults[key];
   });
   return options;
 };
@@ -65,6 +71,7 @@ export const barnardosCustomConsent = (options) => {
     closeButtonContent: "&#x2715;",
     closeButtonClass: "_barnardos-cookie-close",
     closeButtonElement: "button",
+    restrictDomain: ".barnardos.org.uk",
   });
 
   let scripts = check(options, "additionalScripts");
@@ -74,6 +81,20 @@ export const barnardosCustomConsent = (options) => {
       `(^|[^;]+)\\s*${name}\\s*=\\s*([^;]+)`,
     );
     return result ? result.pop() : "";
+  };
+
+  const setCookieValue = function (name, value) {
+    var days = arguments[2] || 365;
+    var expires = new Date();
+    expires.setDate(expires.getDate() + days);
+    document.cookie =
+      name +
+      "=" +
+      value +
+      "; expires=" +
+      expires +
+      (options.restrictDomain ? ";domain=" + options.restrictDomain : "") +
+      "; path=/; SameSite=Strict";
   };
 
   // Build a button
@@ -151,9 +172,7 @@ export const barnardosCustomConsent = (options) => {
   const closeConsentBanner = () => {
     consentBanner.parentNode.removeChild(consentBanner);
     cookieOverlay.parentNode.removeChild(cookieOverlay);
-    const expires = new Date();
-    expires.setDate(expires.getDate() + 365);
-    document.cookie = `consentBanner=closed; expires=${expires}; domain=.barnardos.org.uk; path=/; SameSite=Strict`;
+    setCookieValue("consentBanner", "closed");
   };
 
   // Load the scripts and trackers
@@ -186,9 +205,7 @@ export const barnardosCustomConsent = (options) => {
     });
 
     // Add acceptance to cookie so we can load the trackers and scripts with subsequent page views
-    const expires = new Date();
-    expires.setDate(expires.getDate() + 365);
-    document.cookie = `consentAction=accept; expires=${expires}; domain=.barnardos.org.uk; path=/; SameSite=Strict`;
+    setCookieValue("consentAction", "accept");
   };
 
   // Create a YYYY-MM date format

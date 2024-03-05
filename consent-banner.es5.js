@@ -2,7 +2,7 @@
 //common options routines
 function set_static_defaults(options, defaults) {
   Object.keys(defaults).forEach((key) => {
-    options[key] = options[key] || defaults[key];
+    options[key] = options.hasOwnProperty(key) ? options[key] : defaults[key];
   });
   return options;
 }
@@ -49,6 +49,7 @@ function barnardosCustomConsent(options) {
     closeButtonContent: "&#x2715;",
     closeButtonClass: "_barnardos-cookie-close",
     closeButtonElement: "button",
+    restrictDomain: ".barnardos.org.uk",
   });
 
   var scripts = options.additionalScripts;
@@ -58,6 +59,20 @@ function barnardosCustomConsent(options) {
       "(^|[^;]+)\\s*" + name + "\\s*=\\s*([^;]+)",
     );
     return result ? result.pop() : "";
+  };
+
+  var setCookieValue = function (name, value) {
+    var days = arguments[2] || 365;
+    var expires = new Date();
+    expires.setDate(expires.getDate() + days);
+    document.cookie =
+      name +
+      "=" +
+      value +
+      "; expires=" +
+      expires +
+      (options.restrictDomain ? ";domain=" + options.restrictDomain : "") +
+      "; path=/; SameSite=Strict";
   };
 
   // Build a button
@@ -136,12 +151,7 @@ function barnardosCustomConsent(options) {
   var closeConsentBanner = function () {
     consentBanner.parentNode.removeChild(consentBanner);
     cookieOverlay.parentNode.removeChild(cookieOverlay);
-    var expires = new Date();
-    expires.setDate(expires.getDate() + 365);
-    document.cookie =
-      "consentBanner=closed; expires=" +
-      expires +
-      ";domain=.barnardos.org.uk; path=/; SameSite=Strict";
+    setCookieValue("consentBanner", "closed");
   };
 
   // Load the scripts and trackers
@@ -174,12 +184,7 @@ function barnardosCustomConsent(options) {
     });
     // Add acceptance to cookie so we can load the
     // Trackers and scripts with subsequent page views
-    var expires = new Date();
-    expires.setDate(expires.getDate() + 365);
-    document.cookie =
-      "consentAction=accept; expires=" +
-      expires +
-      ";domain=.barnardos.org.uk; path=/; SameSite=Strict";
+    setCookieValue("consentAction", "accept");
   };
 
   // Create a YYYY-MM date format

@@ -23,6 +23,7 @@ You can customise the standard consent banner by passing options, either in .env
 - BANNER_CONTENT: Custom text content (but not buttons)
 - CLOSE_BUTTON_CONTENT: Custom text or an svg for the close button. Defaults to "&#x2715;".
 - ADDITIONAL_SCRIPTS: An array of additional tracking scripts to be ran when the consent banner is accepted. If you have other scripts to use instead, GTM_CODE is optional and omitting it will prevent the banner attempting to load GTM scripts. Scripts are described by JSON objects with the properties name (arbitrary, for your reference), script (a function to execute), and args (an array of arguments to pass when the script is accepted). Defaults to none.
+- RESTRICT_DOMAIN: defaults to ```'.barnardos.org.uk'``` but you can use this to set another domain or if set to ```false``` it will allow the banner to be shown on any domain.
 - RELOAD_ON_ACCEPT: set this to ```true``` to set the cookie and then reload the page if you have scripts which cannot be provided above for architectural reasons, and which have loaded with defaults that cannot be easily toggled at run time. Defaults to ```false```.
 - STYLE_CONTENT: Custom styles for the consent banner. Defaults to those outlined in ```consent-banner.template.css``` in the package. You can copy this template to help you customise the styles.
 - USE_EXTERNAL_STYLESHEET: use this instead of STYLE_CONTENT to link to an external stylesheet provied by your application. You can copy the template above to your own stylesheet to help you customise the styles.
