@@ -27,6 +27,7 @@ You can customise the standard consent banner by passing options, either in .env
 - STYLE_CONTENT: Custom styles for the consent banner. Defaults to those outlined in ```consent-banner.template.css``` in the package. You can copy this template to help you customise the styles.
 - USE_EXTERNAL_STYLESHEET: use this instead of STYLE_CONTENT to link to an external stylesheet provied by your application. You can copy the template above to your own stylesheet to help you customise the styles.
 - BUTTON_ELEMENT: If you are using your own stylesheet you may prefer to use a different element for the accept/reject buttons. Defaults to "button".
+- BUTTON_CONTENT: Use this to add HTML content such as an SVG icon after the Accept/Reject button text. Defaults to none.
 - BUTTON_CLASS: If you are using your own stylesheet you may prefer your own class name for the button styling. Defaults to "_barnardos-consent-banner__button".
 - CLOSE_BUTTON_ELEMENT: If you are using your own stylesheet you may prefer to use a different element for the close button. Defaults to "button".
 - CLOSE_BUTTON_CLASS: If you are using your own stylesheet you may prefer your own class name for the close button styling. Defaults to "_barnardos-cookie-close".

@@ -62,6 +62,7 @@ function barnardosCustomConsent(options) {
 
   // Build a button
   var buildButton = function (text) {
+    const content = arguments[1];
     var button = document.createElement(options.buttonElement);
     switch (options.buttonElement) {
       case "button":
@@ -70,15 +71,15 @@ function barnardosCustomConsent(options) {
         button.setAttribute("href", "#");
     }
     button.id = text.toLowerCase();
-    button.textContent = text;
+    button.innerHTML = text + (content || "");
     button.className = options.buttonClass;
     return button;
   };
 
   // Create the two buttons and a placeholder for the banner
   var consentBanner = document.createElement("div");
-  var rejectButton = buildButton("Reject");
-  var acceptButton = buildButton("Accept");
+  var rejectButton = buildButton("Reject", options.buttonContent);
+  var acceptButton = buildButton("Accept", options.buttonContent);
   var cookieOverlay = document.createElement("div");
   var closeButton = document.createElement(options.closeButtonElement);
   if (options.buttonElement == "a") {
